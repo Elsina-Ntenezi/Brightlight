@@ -1,0 +1,41 @@
+-SELECT * FROM COFFEESHOP.COFFEE.COFFEE_SALES;
+SELECT  
+        COUNT(DISTINCT transaction_id) AS number_of_transactions,
+        SUM(transaction_qty*unit_price) AS total_revenue,
+        SUM(transaction_qty) AS number_of_items_sold,
+
+      
+        MONTHNAME(transaction_date) AS Month,
+        DAYNAME(transaction_date) as Day,
+CASE 
+          WHEN transaction_time BETWEEN '00:00:00' AND '11:00:00' THEN 'MORNING'
+          WHEN transaction_time BETWEEN '11:00:01' AND '14:00:00' THEN 'LUNCH_TIME'
+          WHEN transaction_time BETWEEN '14:00:01' AND '17:00:00' THEN 'AFTERNOON'
+          WHEN transaction_time BETWEEN '17:00:01' AND '20:00:00' THEN 'EVENING'
+          ELSE 'NIGHT'
+    END AS Time_bucket,
+    
+CASE 
+          WHEN Month BETWEEN 'JAN' AND 'MAR' THEN 'Qaurter 1'
+          WHEN Month BETWEEN 'APR' AND 'JUN' THEN 'Quarter 2'
+          WHEN Month BETWEEN 'JUL' AND 'SEP' THEN 'Quarter 3'
+          ELSE 'Quarter 4'
+    END AS Quarters,
+    
+    
+    product_category,
+    product_type,
+    product_detail,
+    store_location
+    
+    FROM COFFEESHOP.COFFEE.COFFEE_SALES
+    GROUP BY
+    Month,
+    Day,
+    Quarters,
+    Time_bucket,
+    product_category,
+    product_type,
+    product_detail,
+    store_location;
+    
